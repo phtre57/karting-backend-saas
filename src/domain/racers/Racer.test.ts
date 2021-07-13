@@ -1,10 +1,10 @@
 import { Racer } from './Racer';
+import { RacerId } from './RacerId';
 
 describe('Racer', () => {
-  it('REMOVE ME LATER', () => {
-    const aName = 'patate';
-    const actual = new Racer({ name: aName });
+  test('When getting full name Then full name is composed of first name and last name', () => {
+    const actual = new Racer({ id: new RacerId('racerId'), firstName: 'patate', lastName: 'smashed' });
 
-    expect(actual.name).toBe(aName);
+    expect(actual.fullName).toBe('patate smashed');
   });
 });

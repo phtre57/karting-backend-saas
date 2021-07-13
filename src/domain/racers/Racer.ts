@@ -1,11 +1,23 @@
+import { RacerId } from './RacerId';
+
 interface IRacer {
-  name: string;
+  id: RacerId;
+  firstName: string;
+  lastName: string;
 }
 
 export class Racer {
-  name: string;
+  id: RacerId;
+  firstName: string;
+  lastName: string;
 
-  constructor({ name }: IRacer) {
-    this.name = name;
+  constructor(racer: IRacer) {
+    this.id = racer.id;
+    this.firstName = racer.firstName;
+    this.lastName = racer.lastName;
+  }
+
+  get fullName(): string {
+    return `${this.firstName} ${this.lastName}`;
   }
 }
