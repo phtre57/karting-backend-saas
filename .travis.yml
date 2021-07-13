@@ -9,6 +9,8 @@ cache:
 
 before_script:
   - yarn --frozen-lockfile
+  - cd cdk
+  - yarn --frozen-lockfile
 
 script:
   - yarn lint
