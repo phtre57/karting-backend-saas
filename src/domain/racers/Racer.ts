@@ -6,6 +6,6 @@ export class Racer {
   name: string;
 
   constructor({ name }: IRacer) {
-    this.name = name
+    this.name = name;
   }
 }
