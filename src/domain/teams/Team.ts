@@ -1,17 +1,21 @@
 import { Racer } from '../racers/Racer';
 import { RacerId } from '../racers/RacerId';
 import { RacerNotInTeamException } from './exceptions/RacerNotInTeamException';
+import { TeamId } from './TeamId';
 
 interface ITeam {
+  id: TeamId;
   racers: Record<string, Racer>;
   name: string;
 }
 
 export class Team {
+  id: TeamId;
   racers: Record<string, Racer>;
   name: string;
 
   constructor(team: ITeam) {
+    this.id = team.id;
     this.racers = team.racers;
     this.name = this.name;
   }
