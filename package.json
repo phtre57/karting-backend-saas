@@ -22,7 +22,8 @@
   "homepage": "https://github.com/phtre57/karting-saas#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "express-promise-router": "^4.1.0"
+    "express-promise-router": "^4.1.0",
+    "superstruct": "^0.15.2"
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",
