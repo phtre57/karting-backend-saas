@@ -1,12 +1,10 @@
-import { object, string } from 'superstruct';
+import { object, string, optional } from 'superstruct';
 
 export const RacerSchema = object({
+  id: optional(string()),
   firstName: string(),
   lastName: string(),
+  fullName: optional(string()),
 });
 
-export interface RacerDto {
-  id: string;
-  firstName: string;
-  lastName: string;
-}
+export type RacerDto = typeof RacerSchema.TYPE;
