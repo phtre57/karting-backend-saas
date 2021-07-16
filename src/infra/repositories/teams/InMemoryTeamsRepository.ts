@@ -10,7 +10,7 @@ export class InMemoryTeamsRepository implements TeamsRepository {
     this.teams = teams;
   }
 
-  getTeam(teamId: TeamId): Team {
+  async getTeam(teamId: TeamId): Promise<Team> {
     if (!this.teams[teamId.value]) {
       throw new TeamNotFoundException(teamId);
     }
@@ -18,14 +18,14 @@ export class InMemoryTeamsRepository implements TeamsRepository {
     return this.teams[teamId.value];
   }
 
-  addTeam(team: Team): Team {
+  async addTeam(team: Team): Promise<Team> {
     const { id } = team;
     this.teams[id.value] = team;
 
     return this.teams[id.value];
   }
 
-  updateTeam(team: Team): Team {
+  async updateTeam(team: Team): Promise<Team> {
     const { id } = team;
     if (!this.teams[id.value]) {
       throw new TeamNotFoundException(id);

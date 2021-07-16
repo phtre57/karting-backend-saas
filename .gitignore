@@ -1,5 +1,7 @@
 build
 
+.env
+
 # Logs
 logs
 *.log
