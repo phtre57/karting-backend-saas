@@ -2,8 +2,8 @@ import { object, string, optional } from 'superstruct';
 
 export const RacerSchema = object({
   id: optional(string()),
-  firstName: string(),
-  lastName: string(),
+  firstName: optional(string()),
+  lastName: optional(string()),
   fullName: optional(string()),
 });
 

@@ -18,13 +18,19 @@ export class InMemoryTeamsRepository implements TeamsRepository {
     return this.teams[teamId.value];
   }
 
-  addOrUpdateTeam(team: Team): Team {
+  addTeam(team: Team): Team {
+    const { id } = team;
+    this.teams[id.value] = team;
+
+    return this.teams[id.value];
+  }
+
+  updateTeam(team: Team): Team {
     const { id } = team;
     if (!this.teams[id.value]) {
       throw new TeamNotFoundException(id);
     }
-    this.teams[id.value] = team;
 
-    return this.teams[id.value];
+    return this.addTeam(team);
   }
 }

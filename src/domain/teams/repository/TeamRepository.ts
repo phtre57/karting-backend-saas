@@ -3,5 +3,6 @@ import { TeamId } from '../TeamId';
 
 export interface TeamsRepository {
   getTeam(teamId: TeamId): Team;
-  addOrUpdateTeam(team: Team): Team;
+  addTeam(team: Team): Team;
+  updateTeam(team: Team): Team;
 }

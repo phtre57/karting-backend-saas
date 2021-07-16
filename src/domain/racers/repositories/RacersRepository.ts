@@ -3,5 +3,6 @@ import { RacerId } from '../RacerId';
 
 export interface RacersRepository {
   getRacer(racerId: RacerId): Racer;
-  addOrUpdateRacer(racer: Racer): Racer;
+  addRacer(racer: Racer): Racer;
+  updateRacer(racer: Racer): Racer;
 }

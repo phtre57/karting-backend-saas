@@ -3,6 +3,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import process from 'process';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+
 import TeamsRouter from './teams/TeamsRouter';
 
 const app = express();

@@ -23,6 +23,6 @@ export class TeamsService implements ITeamsService {
 
   addTeam(newTeam: NewTeam): Team {
     const team = this.teamFactory.newTeam(newTeam);
-    return this.teamsRepository.addOrUpdateTeam(team);
+    return this.teamsRepository.addTeam(team);
   }
 }

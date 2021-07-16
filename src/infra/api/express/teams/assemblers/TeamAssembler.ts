@@ -1,9 +1,7 @@
 import { TeamDto } from '../../../../../services/teams/dtos/TeamDto';
-import { Team } from '../../../../../domain/teams/Team';
+import { NewTeam, Team } from '../../../../../domain/teams/Team';
 import { RacerAssembler } from '../../racers/assemblers/RacerAssembler';
-import { Racer } from '../../../../../domain/racers/Racer';
 import { RacerId } from '../../../../../domain/racers/RacerId';
-import { TeamId } from '../../../../../domain/teams/TeamId';
 
 export class TeamAssembler {
   racerAssembler: RacerAssembler;
@@ -12,25 +10,37 @@ export class TeamAssembler {
     this.racerAssembler = racerAssembler;
   }
 
-  fromDto(teamDto: TeamDto): Team {
-    // TODO: we need repo to add id maybe having id as optionnal?
-    const team = new Team({
-      id: new TeamId('patate'),
+  newTeamFromDto(teamDto: TeamDto): NewTeam {
+    return {
       name: teamDto.name,
-      racers: {},
-    });
-    teamDto.racers.forEach((racer, index) => {
-      // TODO: we need repo to add id maybe having id as optionnal?
-      team.addOrUpdateRacer(
-        new Racer({
-          id: new RacerId(index.toString()),
-          firstName: racer.firstName,
-          lastName: racer.lastName,
-        })
-      );
-    });
-    return team;
+      racers: teamDto.racers.map((racer) => {
+        return {
+          ...racer,
+          id: racer.id ? new RacerId(racer.id) : undefined,
+        };
+      }),
+    };
   }
+
+  // fromDto(teamDto: TeamDto): Team {
+  //   // TODO: we need repo to add id maybe having id as optionnal?
+  //   const team = new Team({
+  //     id: new TeamId('patate'),
+  //     name: teamDto.name,
+  //     racers: {},
+  //   });
+  //   teamDto.racers.forEach((racer, index) => {
+  //     // TODO: we need repo to add id maybe having id as optionnal?
+  //     team.addOrUpdateRacer(
+  //       new Racer({
+  //         id: new RacerId(index.toString()),
+  //         firstName: racer.firstName,
+  //         lastName: racer.lastName,
+  //       })
+  //     );
+  //   });
+  //   return team;
+  // }
 
   toDto(team: Team): TeamDto {
     return {

@@ -3,6 +3,6 @@ import { addTeamHandler } from './TeamsResource';
 
 const TeamsRouter = Router();
 
-TeamsRouter.post('', addTeamHandler);
+TeamsRouter.post('/', addTeamHandler);
 
 export default TeamsRouter;

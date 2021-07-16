@@ -18,13 +18,18 @@ export class InMemoryRacersRepository implements RacersRepository {
     return this.racers[racerId.value];
   }
 
-  addOrUpdateRacer(racer: Racer): Racer {
+  addRacer(racer: Racer): Racer {
+    const { id } = racer;
+    this.racers[id.value] = racer;
+
+    return this.racers[id.value];
+  }
+
+  updateRacer(racer: Racer): Racer {
     const { id } = racer;
     if (!this.racers[id.value]) {
       throw new RacerNotFoundException(id);
     }
-    this.racers[id.value] = racer;
-
-    return this.racers[id.value];
+    return this.addRacer(racer);
   }
 }
