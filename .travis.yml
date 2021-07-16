@@ -14,5 +14,6 @@ before_script:
   - cd ..
 
 script:
+  - yarn build
   - yarn lint
   - yarn test:ci

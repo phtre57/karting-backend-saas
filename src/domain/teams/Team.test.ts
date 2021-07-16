@@ -2,12 +2,13 @@ import { Racer } from '../racers/Racer';
 import { RacerId } from '../racers/RacerId';
 import { RacerNotInTeamException } from './exceptions/RacerNotInTeamException';
 import { Team } from './Team';
+import { TeamId } from './TeamId';
 
 describe('Team', () => {
   let team: Team;
 
   beforeEach(() => {
-    team = new Team({ racers: {}, name: 'pepito' });
+    team = new Team({ id: new TeamId('patate'), racers: {}, name: 'pepito' });
   });
 
   test('When adding or updating racer Then adds racer to team racers', () => {

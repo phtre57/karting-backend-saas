@@ -1,5 +1,5 @@
 import { createServer } from 'http';
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response } from 'express';
 import process from 'process';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -18,7 +18,7 @@ app.use(
 );
 app.use(bodyParser.json());
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
+app.use(function (err: Error, req: Request, res: Response) {
   console.error(err.stack);
   res.status(500).send('Internal Server Error');
 });
