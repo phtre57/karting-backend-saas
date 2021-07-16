@@ -5,7 +5,7 @@ import { TeamId } from './TeamId';
 
 export interface NewTeam {
   name: string;
-  racers: Array<Racer | NewRacer>;
+  racers: Array<NewRacer>;
 }
 interface ITeam {
   id: TeamId;

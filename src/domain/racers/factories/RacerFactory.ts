@@ -6,8 +6,8 @@ export class RacerFactory {
     const id = RacerId.new();
     return new Racer({
       id: id,
-      firstName: newRacer.firstName,
-      lastName: newRacer.firstName,
+      firstName: newRacer.firstName || '',
+      lastName: newRacer.firstName || '',
     });
   }
 }
