@@ -1,24 +1,28 @@
+import { TeamFactory } from '../../domain/teams/factories/TeamFactory';
 import { TeamsRepository } from '../../domain/teams/repository/TeamRepository';
-import { Team } from '../../domain/teams/Team';
+import { NewTeam, Team } from '../../domain/teams/Team';
 import { TeamId } from '../../domain/teams/TeamId';
 
 export interface ITeamsService {
   getTeam(teamId: TeamId): Team;
-  addTeam(team: Team): Team;
+  addTeam(newTeam: NewTeam): Team;
 }
 
 export class TeamsService implements ITeamsService {
-  repository: TeamsRepository;
+  teamsRepository: TeamsRepository;
+  teamFactory: TeamFactory;
 
-  constructor(repository: TeamsRepository) {
-    this.repository = repository;
+  constructor(teamsRepository: TeamsRepository, teamFactory: TeamFactory) {
+    this.teamsRepository = teamsRepository;
+    this.teamFactory = teamFactory;
   }
 
   getTeam(teamId: TeamId): Team {
-    return this.repository.getTeam(teamId);
+    return this.teamsRepository.getTeam(teamId);
   }
 
-  addTeam(team: Team): Team {
-    return this.repository.addOrUpdateTeam(team);
+  addTeam(newTeam: NewTeam): Team {
+    const team = this.teamFactory.newTeam(newTeam);
+    return this.teamsRepository.addOrUpdateTeam(team);
   }
 }

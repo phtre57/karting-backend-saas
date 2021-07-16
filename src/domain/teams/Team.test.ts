@@ -12,7 +12,11 @@ describe('Team', () => {
 
   test('When adding or updating racer Then adds racer to team racers', () => {
     const racerId = new RacerId('id');
-    const racer = new Racer({ id: racerId, firstName: 'fel', lastName: 'patate' });
+    const racer = new Racer({
+      id: racerId,
+      firstName: 'fel',
+      lastName: 'patate',
+    });
 
     team.addOrUpdateRacer(racer);
 
@@ -29,7 +33,11 @@ describe('Team', () => {
 
   test('Given racer does exist in team When getting racer Then racer found in team', () => {
     const racerId = new RacerId('id');
-    const racer = new Racer({ id: racerId, firstName: 'fel', lastName: 'patate' });
+    const racer = new Racer({
+      id: racerId,
+      firstName: 'fel',
+      lastName: 'patate',
+    });
     team.addOrUpdateRacer(racer);
 
     const actual = team.getRacer(racerId);
@@ -47,7 +55,11 @@ describe('Team', () => {
 
   test('Given racer does exist When removing racer Then racer is removed from team', () => {
     const racerId = new RacerId('id');
-    const racer = new Racer({ id: racerId, firstName: 'fel', lastName: 'patate' });
+    const racer = new Racer({
+      id: racerId,
+      firstName: 'fel',
+      lastName: 'patate',
+    });
     team.addOrUpdateRacer(racer);
 
     team.removeRacer(racerId);

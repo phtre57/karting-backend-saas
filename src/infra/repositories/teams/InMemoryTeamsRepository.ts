@@ -3,7 +3,6 @@ import { TeamsRepository } from '../../../domain/teams/repository/TeamRepository
 import { Team } from '../../../domain/teams/Team';
 import { TeamId } from '../../../domain/teams/TeamId';
 
-// TODO: Test me?
 export class InMemoryTeamsRepository implements TeamsRepository {
   teams: Record<string, Team>;
 

@@ -1,7 +1,12 @@
-export class TeamId {
+import { Uuidv4 } from '../ids/Uuidv4';
+export class TeamId extends Uuidv4 {
   value: string;
 
   constructor(value: string) {
-    this.value = value;
+    super(value, typeof TeamId);
+  }
+
+  static new() {
+    return Uuidv4.new(typeof TeamId);
   }
 }

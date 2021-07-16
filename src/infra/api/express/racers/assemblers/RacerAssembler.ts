@@ -1,9 +1,14 @@
 import { Racer } from '../../../../../domain/racers/Racer';
-import { RacerDto } from '../dtos/RacerDto';
+import { RacerId } from '../../../../../domain/racers/RacerId';
+import { RacerDto } from '../../../../../services/racers/dtos/RacerDto';
 
 export class RacerAssembler {
   fromDto(racerDto: RacerDto): Racer {
-    return new Racer({ id: racerDto.id, firstName: racerDto.firstName, lastName: racerDto.lastName });
+    return new Racer({
+      id: new RacerId(racerDto.id),
+      firstName: racerDto.firstName,
+      lastName: racerDto.lastName,
+    });
   }
 
   toDto(racer: Racer): RacerDto {

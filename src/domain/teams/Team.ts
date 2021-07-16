@@ -1,14 +1,17 @@
-import { Racer } from '../racers/Racer';
+import { NewRacer, Racer } from '../racers/Racer';
 import { RacerId } from '../racers/RacerId';
 import { RacerNotInTeamException } from './exceptions/RacerNotInTeamException';
 import { TeamId } from './TeamId';
 
+export interface NewTeam {
+  name: string;
+  racers: Array<Racer | NewRacer>;
+}
 interface ITeam {
   id: TeamId;
-  racers: Record<string, Racer>;
   name: string;
+  racers: Record<string, Racer>;
 }
-
 export class Team {
   id: TeamId;
   racers: Record<string, Racer>;
