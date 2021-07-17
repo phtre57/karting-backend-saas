@@ -37,10 +37,12 @@ server.listen(port, () => {
 });
 
 process.on('SIGINT', () => {
+  serverDependencies.kill();
   process.exit(0);
 });
 
 process.on('SIGTERM', () => {
+  serverDependencies.kill();
   process.exit(0);
 });
 

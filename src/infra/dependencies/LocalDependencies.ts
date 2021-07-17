@@ -71,5 +71,7 @@ export class LocalDependencyContainer implements DependencyContainer {
     };
   }
 
-  kill(): void {}
+  kill(): void {
+    this.mongoRepository.close();
+  }
 }
