@@ -1,4 +1,4 @@
-import { TeamDto } from '../../../../../services/teams/dtos/TeamDto';
+import { TeamDto } from '../dtos/TeamDto';
 import { NewTeam, Team } from '../../../../../domain/teams/Team';
 import { RacerAssembler } from '../../racers/assemblers/RacerAssembler';
 import { RacerId } from '../../../../../domain/racers/RacerId';

@@ -1,5 +1,6 @@
 import { MongoClient, Db } from 'mongodb';
 
+// This class must be use as a singleton and injected in other mongo repos
 export class MongoRepository {
   dbName: string;
   client: MongoClient;
@@ -8,14 +9,14 @@ export class MongoRepository {
   constructor(connectionString: string, dbName: string) {
     this.dbName = dbName;
     this.client = new MongoClient(connectionString);
+    this.client.connect();
   }
 
-  protected getDatabase() {
-    this.client.connect();
+  public getDatabase() {
     return this.client.db(this.dbName);
   }
 
-  protected close() {
+  public close() {
     this.client.close();
   }
 }

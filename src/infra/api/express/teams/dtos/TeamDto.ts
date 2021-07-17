@@ -7,4 +7,9 @@ export const TeamSchema = object({
   racers: array(RacerSchema),
 });
 
+export const TeamsIdSchema = object({
+  id: string(),
+});
+
 export type TeamDto = typeof TeamSchema.TYPE;
+export type TeamIdDto = typeof TeamsIdSchema.TYPE;

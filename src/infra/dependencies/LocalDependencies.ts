@@ -1,24 +1,75 @@
+import { RacersRepository } from 'domain/racers/repositories/RacersRepository';
+import { TeamsRepository } from 'domain/teams/repository/TeamRepository';
+import { MongoRepository } from 'infra/repositories/mongoDb/MongoRepository';
+import { MongoTeamsRepository } from 'infra/repositories/teams/MongoTeamsRepository';
 import { RacerFactory } from '../../domain/racers/factories/RacerFactory';
 import { TeamFactory } from '../../domain/teams/factories/TeamFactory';
 import { TeamsService } from '../../services/teams/TeamsService';
 import { RacerAssembler } from '../api/express/racers/assemblers/RacerAssembler';
 import { TeamAssembler } from '../api/express/teams/assemblers/TeamAssembler';
 import { InMemoryRacersRepository } from '../repositories/racers/InMemoryRacersRepository';
-import { InMemoryTeamsRepository } from '../repositories/teams/InMemoryTeamsRepository';
 import { Dependencies } from './Dependencies';
+import { ENV_KEYS, getEnvVariable } from './env';
 
-// TODO: use service context?
-const racerAssembler = new RacerAssembler();
-const racerFactory = new RacerFactory();
-const racersRepository = new InMemoryRacersRepository({});
+export interface DependencyContainer {
+  getDependencies(): Dependencies;
+  kill(): void;
+}
 
-const teamsRepository = new InMemoryTeamsRepository({});
-const teamFactory = new TeamFactory(racerFactory, racersRepository);
-const teamsService = new TeamsService(teamsRepository, teamFactory);
-const teamsAssembler = new TeamAssembler(racerAssembler);
+// TODO: handle all env in future
+export class LocalDependencyContainer implements DependencyContainer {
+  private racerAssembler: RacerAssembler;
+  private racerFactory: RacerFactory;
+  private racersRepository: RacersRepository;
 
-export const localDependencies: Dependencies = {
-  teamsRepository: teamsRepository,
-  teamsService: teamsService,
-  teamsAssembler: teamsAssembler,
-};
+  private mongoRepository: MongoRepository;
+
+  private teamsRepository: TeamsRepository;
+  private teamFactory: TeamFactory;
+  private teamsService: TeamsService;
+  private teamsAssembler: TeamAssembler;
+
+  // TODO: Order is important we should have some null checking
+  constructor() {
+    const connectionString = `mongodb+srv://${getEnvVariable(
+      ENV_KEYS.DBUSERNAME
+    )}:${getEnvVariable(
+      ENV_KEYS.DBPASSWORD
+    )}@cluster0.pvqlc.mongodb.net/retryWrites=true&w=majority`;
+    this.mongoRepository = new MongoRepository(
+      connectionString,
+      getEnvVariable(ENV_KEYS.DBNAME)
+    );
+    this.initRacersContext();
+    this.initTeamsContext();
+  }
+
+  private initRacersContext() {
+    this.racerAssembler = new RacerAssembler();
+    this.racerFactory = new RacerFactory();
+    this.racersRepository = new InMemoryRacersRepository({});
+  }
+
+  private initTeamsContext() {
+    this.teamsRepository = new MongoTeamsRepository(this.mongoRepository);
+    this.teamFactory = new TeamFactory(
+      this.racerFactory,
+      this.racersRepository
+    );
+    this.teamsService = new TeamsService(
+      this.teamsRepository,
+      this.teamFactory
+    );
+    this.teamsAssembler = new TeamAssembler(this.racerAssembler);
+  }
+
+  getDependencies(): Dependencies {
+    return {
+      teamsRepository: this.teamsRepository,
+      teamsService: this.teamsService,
+      teamsAssembler: this.teamsAssembler,
+    };
+  }
+
+  kill(): void {}
+}

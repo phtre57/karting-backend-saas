@@ -1,10 +1,13 @@
 import { createServer } from 'http';
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import process from 'process';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
 import TeamsRouter from './teams/TeamsRouter';
+import { LocalDependencyContainer } from 'infra/dependencies/LocalDependencies';
+
+export const serverDependencies = new LocalDependencyContainer();
 
 const app = express();
 const server = createServer(app);
@@ -18,7 +21,7 @@ app.use(
 );
 app.use(bodyParser.json());
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use(function (err: Error, req: Request, res: Response) {
+app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
   console.error(err.stack);
   res.status(500).send('Internal Server Error');
 });

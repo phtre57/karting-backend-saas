@@ -4,8 +4,8 @@ import { NewTeam, Team } from '../../domain/teams/Team';
 import { TeamId } from '../../domain/teams/TeamId';
 
 export interface ITeamsService {
-  getTeam(teamId: TeamId): Team;
-  addTeam(newTeam: NewTeam): Team;
+  getTeam(teamId: TeamId): Promise<Team>;
+  addTeam(newTeam: NewTeam): Promise<Team>;
 }
 
 export class TeamsService implements ITeamsService {
@@ -17,11 +17,11 @@ export class TeamsService implements ITeamsService {
     this.teamFactory = teamFactory;
   }
 
-  getTeam(teamId: TeamId): Team {
+  async getTeam(teamId: TeamId): Promise<Team> {
     return this.teamsRepository.getTeam(teamId);
   }
 
-  addTeam(newTeam: NewTeam): Team {
+  async addTeam(newTeam: NewTeam): Promise<Team> {
     const team = this.teamFactory.newTeam(newTeam);
     return this.teamsRepository.addTeam(team);
   }
