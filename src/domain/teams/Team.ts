@@ -20,7 +20,7 @@ export class Team {
   constructor(team: ITeam) {
     this.id = team.id;
     this.racers = team.racers;
-    this.name = this.name;
+    this.name = team.name;
   }
 
   addOrUpdateRacer(racer: Racer) {
