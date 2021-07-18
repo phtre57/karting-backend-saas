@@ -5,14 +5,15 @@ import { Team } from './Team';
 import { TeamId } from './TeamId';
 
 describe('Team', () => {
+  const id = TeamId.new();
+  const racerId = RacerId.new();
   let team: Team;
 
   beforeEach(() => {
-    team = new Team({ id: new TeamId('patate'), racers: {}, name: 'pepito' });
+    team = new Team({ id: id, racers: {}, name: 'pepito' });
   });
 
   test('When adding or updating racer Then adds racer to team racers', () => {
-    const racerId = new RacerId('id');
     const racer = new Racer({
       id: racerId,
       firstName: 'fel',
@@ -25,15 +26,12 @@ describe('Team', () => {
   });
 
   test('Given racer does not exist in team When getting racer Then racer not found in team', () => {
-    const racerId = new RacerId('id');
-
     const action = () => team.getRacer(racerId);
 
     expect(action).toThrow(RacerNotInTeamException);
   });
 
   test('Given racer does exist in team When getting racer Then racer found in team', () => {
-    const racerId = new RacerId('id');
     const racer = new Racer({
       id: racerId,
       firstName: 'fel',
@@ -47,15 +45,12 @@ describe('Team', () => {
   });
 
   test('Given racer does not exist When removing racer Then racer not found', () => {
-    const racerId = new RacerId('id');
-
     const action = () => team.removeRacer(racerId);
 
     expect(action).toThrow(RacerNotInTeamException);
   });
 
   test('Given racer does exist When removing racer Then racer is removed from team', () => {
-    const racerId = new RacerId('id');
     const racer = new Racer({
       id: racerId,
       firstName: 'fel',

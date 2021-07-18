@@ -4,7 +4,7 @@ import { RacerId } from './RacerId';
 describe('Racer', () => {
   test('When getting full name Then full name is composed of first name and last name', () => {
     const actual = new Racer({
-      id: new RacerId('racerId'),
+      id: RacerId.new(),
       firstName: 'patate',
       lastName: 'smashed',
     });
