@@ -31,11 +31,10 @@ export class LocalDependencyContainer implements DependencyContainer {
 
   // TODO: Order is important we should have some null checking
   constructor() {
-    const connectionString = `mongodb+srv://${getEnvVariable(
-      ENV_KEYS.DBUSERNAME
-    )}:${getEnvVariable(
-      ENV_KEYS.DBPASSWORD
-    )}@cluster0.pvqlc.mongodb.net/retryWrites=true&w=majority`;
+    const connectionString = MongoRepository.formatConnectionString(
+      getEnvVariable(ENV_KEYS.DBUSERNAME),
+      getEnvVariable(ENV_KEYS.DBPASSWORD)
+    );
     this.mongoRepository = new MongoRepository(
       connectionString,
       getEnvVariable(ENV_KEYS.DBNAME)
@@ -69,6 +68,10 @@ export class LocalDependencyContainer implements DependencyContainer {
       teamsService: this.teamsService,
       teamsAssembler: this.teamsAssembler,
     };
+  }
+
+  async start(): Promise<void> {
+    await this.mongoRepository.connect();
   }
 
   kill(): void {

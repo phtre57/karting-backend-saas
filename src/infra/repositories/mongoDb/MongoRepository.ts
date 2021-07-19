@@ -9,14 +9,21 @@ export class MongoRepository {
   constructor(connectionString: string, dbName: string) {
     this.dbName = dbName;
     this.client = new MongoClient(connectionString);
-    this.client.connect();
   }
 
   public getDatabase() {
     return this.client.db(this.dbName);
   }
 
+  public async connect(): Promise<void> {
+    await this.client.connect();
+  }
+
   public close() {
     this.client.close();
+  }
+
+  static formatConnectionString(dbUserName: string, dbPassword: string) {
+    return `mongodb+srv://${dbUserName}:${dbPassword}@cluster0.pvqlc.mongodb.net/retryWrites=true&w=majority`;
   }
 }

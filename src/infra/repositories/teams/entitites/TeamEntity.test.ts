@@ -29,7 +29,7 @@ describe('TeamEntity', () => {
 
       const actual = toTeamEntity(team);
 
-      expect(actual).toBe({
+      expect(actual).toStrictEqual({
         id: teamId.value,
         name: 'patate',
         racers: {
