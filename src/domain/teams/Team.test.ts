@@ -1,3 +1,7 @@
+/**
+ * @group unit
+ */
+
 import { Racer } from '../racers/Racer';
 import { RacerId } from '../racers/RacerId';
 import { RacerNotInTeamException } from './exceptions/RacerNotInTeamException';

@@ -1,3 +1,7 @@
+/**
+ * @group unit
+ */
+
 import { Racer } from '../../../../domain/racers/Racer';
 import { RacerId } from '../../../../domain/racers/RacerId';
 import { Team } from '../../../../domain/teams/Team';

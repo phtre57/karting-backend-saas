@@ -1,3 +1,9 @@
+/**
+ * @group medium
+ */
+
+import { Chance } from 'chance';
+
 import { MongoRepository } from '../mongoDb/MongoRepository';
 import { getEnvVariable, ENV_KEYS } from '../../dependencies/env';
 import { MongoTeamsRepository } from '../teams/MongoTeamsRepository';
@@ -30,10 +36,10 @@ describe('MongoTeamsRepository - Medium', () => {
 
   test('When adding a team Then team is added to repo', async () => {
     const id = TeamId.new();
-    const name = 'team des iooo';
+    const name = Chance().string({ length: 10 });
     const team = new Team({
       id: id,
-      name: 'team des iooo',
+      name: name,
       racers: {},
     });
 
@@ -45,8 +51,8 @@ describe('MongoTeamsRepository - Medium', () => {
 
   test('When updating a team Then team is updated in repo', async () => {
     const id = TeamId.new();
-    const name = 'team des iooo';
-    const newName = 'teams de zo';
+    const name = Chance().string({ length: 10 });
+    const newName = Chance().string({ length: 10 });
     const team = new Team({
       id: id,
       name: name,
@@ -63,5 +69,24 @@ describe('MongoTeamsRepository - Medium', () => {
     const actualTeam = await repo.getTeam(id);
 
     expect(actualTeam.name).toBe(newName);
+  });
+
+  test('Given team with name already added When adding team Then cannot add this team', async () => {
+    const id = TeamId.new();
+    const anotherId = TeamId.new();
+    const name = Chance().string({ length: 10 });
+    const team = new Team({
+      id: id,
+      name: name,
+      racers: {},
+    });
+    const anotherTeam = new Team({
+      id: anotherId,
+      name: name,
+      racers: {},
+    });
+
+    await repo.addTeam(team);
+    await repo.addTeam(anotherTeam);
   });
 });

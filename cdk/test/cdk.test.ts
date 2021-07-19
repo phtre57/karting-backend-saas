@@ -1,3 +1,7 @@
+/**
+ * @group unit
+ */
+
 import {
   expect as expectCDK,
   matchTemplate,

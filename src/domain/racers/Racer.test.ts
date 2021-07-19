@@ -1,3 +1,7 @@
+/**
+ * @group unit
+ */
+
 import { Racer } from './Racer';
 import { RacerId } from './RacerId';
 

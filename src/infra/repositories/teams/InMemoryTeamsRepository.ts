@@ -1,4 +1,4 @@
-import { TeamNotFoundException } from '../../../domain/teams/exceptions/exceptions/TeamNotFoundException';
+import { TeamNotFoundException } from '../../../domain/teams/repository/exceptions/TeamNotFoundException';
 import { TeamsRepository } from '../../../domain/teams/repository/TeamRepository';
 import { Team } from '../../../domain/teams/Team';
 import { TeamId } from '../../../domain/teams/TeamId';

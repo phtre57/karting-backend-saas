@@ -1,3 +1,7 @@
+/**
+ * @group unit
+ */
+
 import { Uuidv4 } from './Uuidv4';
 
 describe('Uuidv4', () => {

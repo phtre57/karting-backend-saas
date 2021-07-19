@@ -1,12 +1,31 @@
-import { CouldNotSaveTeamException } from 'domain/teams/exceptions/exceptions/CouldNotSaveTeamException';
-import { TeamNotFoundException } from 'domain/teams/exceptions/exceptions/TeamNotFoundException';
+import { TeamNotFoundException } from 'domain/teams/repository/exceptions/TeamNotFoundException';
 import { TeamsRepository } from 'domain/teams/repository/TeamRepository';
-import { Collection } from 'mongodb';
+import { Collection, MongoServerError } from 'mongodb';
 
+import { CouldNotSaveTeamWithSameName } from 'domain/teams/repository/exceptions/CouldNotSaveTeamWithSameName';
 import { Team } from 'domain/teams/Team';
 import { TeamId } from 'domain/teams/TeamId';
 import { MongoRepository } from '../mongoDb/MongoRepository';
 import { buildTeam, toTeamEntity } from './entitites/TeamEntity';
+import { CouldNotSaveTeamWithSameId } from 'domain/teams/repository/exceptions/CouldNotSaveTeamWithSameId';
+
+export const DUPLICATE_KEY_ERROR_CODE = 11000;
+export const NAME_INDEX = 'teams-name-index';
+export const ID_INDEX = 'teams-id-index';
+
+export const handleMongoServerError = (error: MongoServerError, team: Team) => {
+  const { code, message } = error;
+
+  if (code === DUPLICATE_KEY_ERROR_CODE) {
+    if (message.includes(NAME_INDEX)) {
+      throw new CouldNotSaveTeamWithSameName(team);
+    } else if (message.includes(ID_INDEX)) {
+      throw new CouldNotSaveTeamWithSameId(team);
+    }
+  }
+
+  throw error;
+};
 
 export class MongoTeamsRepository implements TeamsRepository {
   private repo: MongoRepository;
@@ -28,28 +47,32 @@ export class MongoTeamsRepository implements TeamsRepository {
   }
 
   async addTeam(team: Team): Promise<Team> {
-    const collection = this.getCollection();
-    const result = await collection.insertOne(toTeamEntity(team));
-
-    if (!result.acknowledged) {
-      throw new CouldNotSaveTeamException(team);
+    try {
+      const collection = this.getCollection();
+      await collection.insertOne(toTeamEntity(team));
+      return team;
+    } catch (e) {
+      if (e instanceof MongoServerError) {
+        handleMongoServerError(e, team);
+      }
+      throw e;
     }
-
-    return team;
   }
 
   async updateTeam(team: Team): Promise<Team> {
-    const collection = this.getCollection();
-    const result = await collection.updateOne(
-      { id: team.id.value },
-      { $set: toTeamEntity(team) }
-    );
-
-    if (!result.acknowledged) {
-      throw new CouldNotSaveTeamException(team);
+    try {
+      const collection = this.getCollection();
+      await collection.updateOne(
+        { id: team.id.value },
+        { $set: toTeamEntity(team) }
+      );
+      return team;
+    } catch (e) {
+      if (e instanceof MongoServerError) {
+        handleMongoServerError(e, team);
+      }
+      throw e;
     }
-
-    return team;
   }
 
   private getCollection(): Collection {

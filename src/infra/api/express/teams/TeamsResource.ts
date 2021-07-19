@@ -51,7 +51,6 @@ const addTeam = async (
   }
 };
 
-// TODO: use dependency better
 const addTeamHandler = async (req: Request, res: Response) =>
   addTeam(
     req,

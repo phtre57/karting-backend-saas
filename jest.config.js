@@ -12,4 +12,5 @@ module.exports = {
   },
   testEnvironment: 'node',
   setupFiles: ['dotenv/config'],
+  runner: 'groups',
 };
