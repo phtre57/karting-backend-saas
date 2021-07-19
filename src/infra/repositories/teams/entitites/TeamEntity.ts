@@ -1,13 +1,17 @@
+import { Document } from 'mongodb';
 import { Racer } from 'domain/racers/Racer';
 import { Team } from 'domain/teams/Team';
 import { TeamId } from 'domain/teams/TeamId';
-import { buildRacer } from 'infra/repositories/racers/entities/RacerEntity';
-import { Document } from 'mongodb';
+import {
+  buildRacer,
+  RacerEntity,
+  toRacerEntity,
+} from 'infra/repositories/racers/entities/RacerEntity';
 
 export interface TeamEntity {
   id: string;
   name: string;
-  racers: Record<string, Racer>;
+  racers: Record<string, RacerEntity>;
 }
 
 export const buildTeam = (document: Document) => {
@@ -21,4 +25,22 @@ export const buildTeam = (document: Document) => {
     name: document.name,
     racers: racers,
   });
+};
+
+export const toTeamEntity = (team: Team): TeamEntity => {
+  const racers: Record<string, RacerEntity> = Object.values(team.racers).reduce(
+    (acc, racer) => {
+      return {
+        ...acc,
+        [racer.id.value]: toRacerEntity(racer),
+      };
+    },
+    {}
+  );
+
+  return {
+    id: team.id.value,
+    name: team.name,
+    racers: racers,
+  };
 };

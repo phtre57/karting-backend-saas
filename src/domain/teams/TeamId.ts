@@ -3,10 +3,10 @@ export class TeamId extends Uuidv4 {
   value: string;
 
   constructor(value: string) {
-    super(value, typeof TeamId);
+    super(value, TeamId.name);
   }
 
   static new() {
-    return Uuidv4.new(typeof TeamId);
+    return Uuidv4.new(TeamId.name);
   }
 }

@@ -16,3 +16,11 @@ export const buildRacer = (document: Document) => {
     lastName: document.lastName,
   });
 };
+
+export const toRacerEntity = (racer: Racer): RacerEntity => {
+  return {
+    id: racer.id.value,
+    firstName: racer.firstName,
+    lastName: racer.lastName,
+  };
+};

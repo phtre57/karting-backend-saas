@@ -4,10 +4,10 @@ export class RacerId extends Uuidv4 {
   value: string;
 
   constructor(value: string) {
-    super(value, typeof RacerId);
+    super(value, RacerId.name);
   }
 
   static new() {
-    return Uuidv4.new(typeof RacerId);
+    return Uuidv4.new(RacerId.name);
   }
 }

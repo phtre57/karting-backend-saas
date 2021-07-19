@@ -2,7 +2,6 @@ import { define, is } from 'superstruct';
 import { v4 as uuidv4 } from 'uuid';
 import isUuid from 'is-uuid';
 
-// TODO: reviewers the error is mysterious
 const uuidValidator = define('Uuid', (value: unknown) =>
   isUuid.v4(value as string)
 );
@@ -12,7 +11,9 @@ export class Uuidv4 {
 
   constructor(value: string, idType: string) {
     if (!is(value, uuidValidator)) {
-      throw new Error(`Invalid id format for: ${idType}`);
+      throw new Error(
+        `Invalid id format for id type: ${idType} and id: ${value}`
+      );
     }
     this.value = value;
   }
