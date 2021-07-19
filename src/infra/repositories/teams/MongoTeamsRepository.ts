@@ -1,13 +1,15 @@
-import { TeamNotFoundException } from 'domain/teams/repository/exceptions/TeamNotFoundException';
-import { TeamsRepository } from 'domain/teams/repository/TeamRepository';
 import { Collection, MongoServerError } from 'mongodb';
 
-import { CouldNotSaveTeamWithSameName } from 'domain/teams/repository/exceptions/CouldNotSaveTeamWithSameName';
+import { TeamNotFoundException } from 'domain/teams/repository/exceptions/TeamNotFoundException';
+import { TeamsRepository } from 'domain/teams/repository/TeamRepository';
+import {
+  CouldNotSaveTeamWithSameName,
+  CouldNotSaveTeamWithSameId,
+} from 'domain/teams/repository/exceptions';
 import { Team } from 'domain/teams/Team';
 import { TeamId } from 'domain/teams/TeamId';
 import { MongoRepository } from '../mongoDb/MongoRepository';
 import { buildTeam, toTeamEntity } from './entitites/TeamEntity';
-import { CouldNotSaveTeamWithSameId } from 'domain/teams/repository/exceptions/CouldNotSaveTeamWithSameId';
 
 export const DUPLICATE_KEY_ERROR_CODE = 11000;
 export const NAME_INDEX = 'teams-name-index';
@@ -78,5 +80,12 @@ export class MongoTeamsRepository implements TeamsRepository {
   private getCollection(): Collection {
     const db = this.repo.getDatabase();
     return db.collection('teams');
+  }
+
+  async _deleteForTests(): Promise<void> {
+    const collection = this.getCollection();
+    await collection.deleteMany({
+      id: { $ne: '5f63bbef-d510-4d69-b291-5ff15b6ebc79' },
+    });
   }
 }

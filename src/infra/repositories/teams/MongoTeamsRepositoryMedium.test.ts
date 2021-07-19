@@ -12,6 +12,7 @@ import { Team } from '../../../domain/teams/Team';
 import {
   CouldNotSaveTeamWithSameName,
   CouldNotSaveTeamWithSameId,
+  TeamNotFoundException,
 } from '../../../domain/teams/repository/exceptions';
 
 describe('MongoTeamsRepository - Medium', () => {
@@ -27,7 +28,8 @@ describe('MongoTeamsRepository - Medium', () => {
     repo = new MongoTeamsRepository(client);
   });
 
-  afterAll(() => {
+  afterAll(async () => {
+    await repo._deleteForTests();
     client.close();
   });
 
@@ -36,6 +38,14 @@ describe('MongoTeamsRepository - Medium', () => {
     const racer = await repo.getTeam(id);
 
     expect(racer.name).toStrictEqual('patate team');
+  });
+
+  test('Given team does not exists When getting team Then team is returned', async () => {
+    const id = TeamId.new();
+
+    const action = async () => await repo.getTeam(id);
+
+    await expect(action).rejects.toThrow(TeamNotFoundException);
   });
 
   test('When adding a team Then team is added to repo', async () => {
