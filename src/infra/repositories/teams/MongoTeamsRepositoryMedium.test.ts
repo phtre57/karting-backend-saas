@@ -9,6 +9,7 @@ import { getEnvVariable, ENV_KEYS } from '../../dependencies/env';
 import { MongoTeamsRepository } from '../teams/MongoTeamsRepository';
 import { TeamId } from '../../../domain/teams/TeamId';
 import { Team } from '../../../domain/teams/Team';
+import { CouldNotSaveTeamWithSameName } from '../../../domain/teams/repository/exceptions/CouldNotSaveTeamWithSameName';
 
 describe('MongoTeamsRepository - Medium', () => {
   let repo: MongoTeamsRepository;
@@ -36,7 +37,7 @@ describe('MongoTeamsRepository - Medium', () => {
 
   test('When adding a team Then team is added to repo', async () => {
     const id = TeamId.new();
-    const name = Chance().string({ length: 10 });
+    const name = Chance().string({ length: 20 });
     const team = new Team({
       id: id,
       name: name,
@@ -51,8 +52,8 @@ describe('MongoTeamsRepository - Medium', () => {
 
   test('When updating a team Then team is updated in repo', async () => {
     const id = TeamId.new();
-    const name = Chance().string({ length: 10 });
-    const newName = Chance().string({ length: 10 });
+    const name = Chance().string({ length: 20 });
+    const newName = Chance().string({ length: 20 });
     const team = new Team({
       id: id,
       name: name,
@@ -74,7 +75,7 @@ describe('MongoTeamsRepository - Medium', () => {
   test('Given team with name already added When adding team Then cannot add this team', async () => {
     const id = TeamId.new();
     const anotherId = TeamId.new();
-    const name = Chance().string({ length: 10 });
+    const name = Chance().string({ length: 20 });
     const team = new Team({
       id: id,
       name: name,
@@ -87,6 +88,8 @@ describe('MongoTeamsRepository - Medium', () => {
     });
 
     await repo.addTeam(team);
-    await repo.addTeam(anotherTeam);
+    const action = async () => await repo.addTeam(anotherTeam);
+
+    await expect(action).rejects.toThrow(CouldNotSaveTeamWithSameName);
   });
 });
