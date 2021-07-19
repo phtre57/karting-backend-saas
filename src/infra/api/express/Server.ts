@@ -22,11 +22,11 @@ serverDependencies
       })
     );
     app.use(bodyParser.json());
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     app.use(function (
       err: Error,
       req: Request,
       res: Response,
+      // eslint-disable-next-line unused-imports/no-unused-vars
       next: NextFunction
     ) {
       console.error(err.stack);

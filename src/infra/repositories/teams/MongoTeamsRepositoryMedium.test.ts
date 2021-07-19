@@ -9,7 +9,10 @@ import { getEnvVariable, ENV_KEYS } from '../../dependencies/env';
 import { MongoTeamsRepository } from '../teams/MongoTeamsRepository';
 import { TeamId } from '../../../domain/teams/TeamId';
 import { Team } from '../../../domain/teams/Team';
-import { CouldNotSaveTeamWithSameName } from '../../../domain/teams/repository/exceptions/CouldNotSaveTeamWithSameName';
+import {
+  CouldNotSaveTeamWithSameName,
+  CouldNotSaveTeamWithSameId,
+} from '../../../domain/teams/repository/exceptions';
 
 describe('MongoTeamsRepository - Medium', () => {
   let repo: MongoTeamsRepository;
@@ -91,5 +94,26 @@ describe('MongoTeamsRepository - Medium', () => {
     const action = async () => await repo.addTeam(anotherTeam);
 
     await expect(action).rejects.toThrow(CouldNotSaveTeamWithSameName);
+  });
+
+  test('Given team with id already added When adding team Then cannot add this team', async () => {
+    const id = TeamId.new();
+    const name = Chance().string({ length: 20 });
+    const anotherName = Chance().string({ length: 20 });
+    const team = new Team({
+      id: id,
+      name: name,
+      racers: {},
+    });
+    const anotherTeam = new Team({
+      id: id,
+      name: anotherName,
+      racers: {},
+    });
+
+    await repo.addTeam(team);
+    const action = async () => await repo.addTeam(anotherTeam);
+
+    await expect(action).rejects.toThrow(CouldNotSaveTeamWithSameId);
   });
 });
