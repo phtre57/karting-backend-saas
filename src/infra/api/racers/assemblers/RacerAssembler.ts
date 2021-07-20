@@ -1,4 +1,4 @@
-import { Racer } from '../../../../../domain/racers/Racer';
+import { Racer } from '../../../../domain/racers/Racer';
 import { RacerDto } from '../dtos/RacerDto';
 
 export class RacerAssembler {

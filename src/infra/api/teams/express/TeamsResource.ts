@@ -2,10 +2,10 @@ import { create } from 'superstruct';
 import { Request, Response } from 'express';
 
 import { TeamsService } from '../../../../services/teams/TeamsService';
-import { TeamAssembler } from './assemblers/TeamAssembler';
-import { TeamSchema, TeamsIdSchema } from './dtos/TeamDto';
+import { TeamAssembler } from '../assemblers/TeamAssembler';
+import { TeamSchema, TeamIdSchema } from '../dtos/TeamDto';
 import { NewTeam } from '../../../../domain/teams/Team';
-import { serverDependencies } from '../Server';
+import { serverDependencies } from '../../express/Server';
 import { TeamId } from 'domain/teams/TeamId';
 
 // TODO: put this in its own file
@@ -26,7 +26,7 @@ const getTeam = async (
   assembler: TeamAssembler
 ) => {
   try {
-    const { id } = create(req.params, TeamsIdSchema);
+    const { id } = create(req.params, TeamIdSchema);
     const teamId = new TeamId(id);
     const team = await service.getTeam(teamId);
     return res.status(200).json(assembler.toDto(team)).send();

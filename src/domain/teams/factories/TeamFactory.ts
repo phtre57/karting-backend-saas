@@ -3,7 +3,6 @@ import { RacersRepository } from '../../racers/repositories/RacersRepository';
 import { NewTeam, Team } from '../Team';
 import { TeamId } from '../TeamId';
 
-// TODO: Test me plz
 export class TeamFactory {
   racerFactory: RacerFactory;
   racersRepository: RacersRepository;

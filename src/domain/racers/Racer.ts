@@ -1,4 +1,3 @@
-import { object, string, validate } from 'superstruct';
 import { RacerId } from './RacerId';
 
 export interface NewRacer {
@@ -6,12 +5,6 @@ export interface NewRacer {
   firstName?: string;
   lastName?: string;
 }
-
-const IRacerValidation = object({
-  firstName: string(),
-  lastName: string(),
-});
-
 interface IRacer extends NewRacer {
   id: RacerId;
   firstName: string;
@@ -24,7 +17,6 @@ export class Racer {
   lastName: string;
 
   constructor(racer: IRacer) {
-    validate(racer, IRacerValidation);
     this.id = racer.id;
     this.firstName = racer.firstName;
     this.lastName = racer.lastName;
