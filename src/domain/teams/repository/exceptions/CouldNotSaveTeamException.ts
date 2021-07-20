@@ -1,7 +1,12 @@
 import { Team } from 'domain/teams/Team';
+import { HttpError } from 'domain/exceptions/HttpError';
 
-export class CouldNotSaveTeamException extends Error {
+export class CouldNotSaveTeamException extends HttpError {
   constructor(team: Team) {
-    super(`Could not save team with id: ${team.id.value}`);
+    super(
+      400,
+      CouldNotSaveTeamException.name,
+      `Could not save team with id: ${team.id.value}`
+    );
   }
 }
