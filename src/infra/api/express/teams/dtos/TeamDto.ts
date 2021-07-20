@@ -1,11 +1,11 @@
-import { object, string, array, optional } from 'superstruct';
+import { object, string, array, optional, size } from 'superstruct';
 
 import { uuidValidator } from 'domain/ids/Uuidv4';
 import { PartialRacerSchema } from '../../racers/dtos/RacerDto';
 
 export const TeamSchema = object({
   id: optional(uuidValidator),
-  name: string(),
+  name: size(string(), 1, Infinity),
   racers: array(PartialRacerSchema),
 });
 
