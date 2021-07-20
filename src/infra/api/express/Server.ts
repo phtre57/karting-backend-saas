@@ -54,6 +54,7 @@ serverDependencies
     });
   })
   .catch(() => {
+    serverDependencies.kill();
     throw new Error('Could not start server!!');
   });
 
