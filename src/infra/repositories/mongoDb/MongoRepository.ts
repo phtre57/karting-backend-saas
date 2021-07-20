@@ -1,5 +1,7 @@
 import { MongoClient, Db } from 'mongodb';
 
+export const DUPLICATE_KEY_ERROR_CODE = 11000;
+
 // This class must be use as a singleton and injected in other mongo repos
 export class MongoRepository {
   dbName: string;

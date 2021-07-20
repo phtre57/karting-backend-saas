@@ -22,7 +22,7 @@ export class TeamsService implements ITeamsService {
   }
 
   async addTeam(newTeam: NewTeam): Promise<Team> {
-    const team = this.teamFactory.newTeam(newTeam);
+    const team = await this.teamFactory.newTeam(newTeam);
     return this.teamsRepository.addTeam(team);
   }
 }

@@ -12,15 +12,16 @@ export class TeamFactory {
     this.racersRepository = racersRepository;
   }
 
-  newTeam(newTeam: NewTeam) {
+  async newTeam(newTeam: NewTeam): Promise<Team> {
     const id = TeamId.new();
     const team = new Team({ id: id, name: newTeam.name, racers: {} });
-    Object.values(newTeam.racers).forEach((racer) => {
+    await Object.values(newTeam.racers).forEach(async (racer) => {
       if (racer.id == undefined) {
         // TODO: add racer to repo here??
         team.addOrUpdateRacer(this.racerFactory.newRacer(racer));
       } else {
-        team.addOrUpdateRacer(this.racersRepository.getRacer(racer.id));
+        const repoRacer = await this.racersRepository.getRacer(racer.id);
+        team.addOrUpdateRacer(repoRacer);
       }
     });
     return team;

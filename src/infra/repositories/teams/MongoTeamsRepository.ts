@@ -8,10 +8,12 @@ import {
 } from 'domain/teams/repository/exceptions';
 import { Team } from 'domain/teams/Team';
 import { TeamId } from 'domain/teams/TeamId';
-import { MongoRepository } from '../mongoDb/MongoRepository';
+import {
+  DUPLICATE_KEY_ERROR_CODE,
+  MongoRepository,
+} from '../mongoDb/MongoRepository';
 import { buildTeam, toTeamEntity } from './entitites/TeamEntity';
 
-export const DUPLICATE_KEY_ERROR_CODE = 11000;
 export const NAME_INDEX = 'teams-name-index';
 export const ID_INDEX = 'teams-id-index';
 
@@ -31,6 +33,7 @@ export const handleMongoServerError = (error: MongoServerError, team: Team) => {
 
 export class MongoTeamsRepository implements TeamsRepository {
   private repo: MongoRepository;
+
   constructor(repo: MongoRepository) {
     this.repo = repo;
   }
@@ -64,10 +67,14 @@ export class MongoTeamsRepository implements TeamsRepository {
   async updateTeam(team: Team): Promise<Team> {
     try {
       const collection = this.getCollection();
-      await collection.updateOne(
+      const result = await collection.updateOne(
         { id: team.id.value },
         { $set: toTeamEntity(team) }
       );
+
+      if (result.matchedCount === 0) {
+        throw new TeamNotFoundException(team.id);
+      }
       return team;
     } catch (e) {
       if (e instanceof MongoServerError) {

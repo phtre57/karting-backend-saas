@@ -8,8 +8,8 @@ import { CouldNotSaveTeamWithSameName } from '../../../domain/teams/repository/e
 import { CouldNotSaveTeamWithSameId } from '../../../domain/teams/repository/exceptions/CouldNotSaveTeamWithSameId';
 import { Team } from '../../../domain/teams/Team';
 import { TeamId } from '../../../domain/teams/TeamId';
+import { DUPLICATE_KEY_ERROR_CODE } from '../mongoDb/MongoRepository';
 import {
-  DUPLICATE_KEY_ERROR_CODE,
   handleMongoServerError,
   ID_INDEX,
   NAME_INDEX,
