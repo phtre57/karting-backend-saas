@@ -17,8 +17,9 @@ export class TeamFactory {
     const team = new Team({ id: id, name: newTeam.name, racers: {} });
     await Object.values(newTeam.racers).forEach(async (racer) => {
       if (racer.id == undefined) {
-        // TODO: add racer to repo here??
-        team.addOrUpdateRacer(this.racerFactory.newRacer(racer));
+        const newRacer = this.racerFactory.newRacer(racer);
+        this.racersRepository.addRacer(newRacer);
+        team.addOrUpdateRacer(newRacer);
       } else {
         const repoRacer = await this.racersRepository.getRacer(racer.id);
         team.addOrUpdateRacer(repoRacer);
