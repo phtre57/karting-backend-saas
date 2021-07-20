@@ -1,10 +1,12 @@
 import { object, string, array, optional } from 'superstruct';
-import { RacerSchema } from '../../racers/dtos/RacerDto';
+
+import { uuidValidator } from 'domain/ids/Uuidv4';
+import { PartialRacerSchema } from '../../racers/dtos/RacerDto';
 
 export const TeamSchema = object({
-  id: optional(string()),
+  id: optional(uuidValidator),
   name: string(),
-  racers: array(RacerSchema),
+  racers: array(PartialRacerSchema),
 });
 
 export const TeamsIdSchema = object({

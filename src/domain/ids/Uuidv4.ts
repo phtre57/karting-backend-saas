@@ -1,9 +1,8 @@
 import { define, is } from 'superstruct';
-import { v4 as uuidv4 } from 'uuid';
-import isUuid from 'is-uuid';
+import { v4 as uuidv4, validate } from 'uuid';
 
-const uuidValidator = define('Uuid', (value: unknown) =>
-  isUuid.v4(value as string)
+export const uuidValidator = define('uuid', (value: unknown) =>
+  validate(value as string)
 );
 
 export class Uuidv4 {

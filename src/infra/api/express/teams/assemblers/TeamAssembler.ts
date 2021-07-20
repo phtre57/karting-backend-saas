@@ -30,7 +30,6 @@ export class TeamAssembler {
   //     racers: {},
   //   });
   //   teamDto.racers.forEach((racer, index) => {
-  //     // TODO: we need repo to add id maybe having id as optionnal?
   //     team.addOrUpdateRacer(
   //       new Racer({
   //         id: new RacerId(index.toString()),
