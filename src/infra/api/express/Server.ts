@@ -4,7 +4,7 @@ import process from 'process';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
-import TeamsRouter from './teams/TeamsRouter';
+import TeamsRouter from '../teams/express/TeamsRouter';
 import { LocalDependencyContainer } from 'infra/dependencies/LocalDependencies';
 
 const app = express();

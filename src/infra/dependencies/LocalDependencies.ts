@@ -5,8 +5,8 @@ import { MongoTeamsRepository } from 'infra/repositories/teams/MongoTeamsReposit
 import { RacerFactory } from '../../domain/racers/factories/RacerFactory';
 import { TeamFactory } from '../../domain/teams/factories/TeamFactory';
 import { TeamsService } from '../../services/teams/TeamsService';
-import { RacerAssembler } from '../api/express/racers/assemblers/RacerAssembler';
-import { TeamAssembler } from '../api/express/teams/assemblers/TeamAssembler';
+import { RacerAssembler } from '../api/racers/assemblers/RacerAssembler';
+import { TeamAssembler } from '../api/teams/assemblers/TeamAssembler';
 import { InMemoryRacersRepository } from '../repositories/racers/InMemoryRacersRepository';
 import { Dependencies } from './Dependencies';
 import { ENV_KEYS, getEnvVariable } from './env';

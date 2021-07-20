@@ -9,9 +9,9 @@ export const TeamSchema = object({
   racers: array(PartialRacerSchema),
 });
 
-export const TeamsIdSchema = object({
-  id: string(),
+export const TeamIdSchema = object({
+  id: uuidValidator,
 });
 
 export type TeamDto = typeof TeamSchema.TYPE;
-export type TeamIdDto = typeof TeamsIdSchema.TYPE;
+export type TeamIdDto = typeof TeamIdSchema.TYPE;
