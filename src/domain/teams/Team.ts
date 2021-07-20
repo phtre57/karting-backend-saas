@@ -1,19 +1,26 @@
-import { Racer } from '../racers/Racer';
+import { NewRacer, Racer } from '../racers/Racer';
 import { RacerId } from '../racers/RacerId';
 import { RacerNotInTeamException } from './exceptions/RacerNotInTeamException';
+import { TeamId } from './TeamId';
 
-interface ITeam {
-  racers: Record<string, Racer>;
+export interface NewTeam {
   name: string;
+  racers: Array<NewRacer>;
 }
-
+interface ITeam {
+  id: TeamId;
+  name: string;
+  racers: Record<string, Racer>;
+}
 export class Team {
+  id: TeamId;
   racers: Record<string, Racer>;
   name: string;
 
   constructor(team: ITeam) {
+    this.id = team.id;
     this.racers = team.racers;
-    this.name = this.name;
+    this.name = team.name;
   }
 
   addOrUpdateRacer(racer: Racer) {
