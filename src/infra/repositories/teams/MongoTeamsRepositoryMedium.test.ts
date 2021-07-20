@@ -85,6 +85,20 @@ describe('MongoTeamsRepository - Medium', () => {
     expect(actualTeam.name).toBe(newName);
   });
 
+  test('When updating a team Then team is updated in repo', async () => {
+    const id = TeamId.new();
+    const name = Chance().string({ length: 20 });
+    const team = new Team({
+      id: id,
+      name: name,
+      racers: {},
+    });
+
+    const action = async () => await repo.updateTeam(team);
+
+    await expect(action).rejects.toThrow(TeamNotFoundException);
+  });
+
   test('Given team with name already added When adding team Then cannot add this team', async () => {
     const id = TeamId.new();
     const anotherId = TeamId.new();

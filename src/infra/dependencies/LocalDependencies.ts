@@ -1,13 +1,14 @@
 import { RacersRepository } from 'domain/racers/repositories/RacersRepository';
 import { TeamsRepository } from 'domain/teams/repository/TeamRepository';
 import { MongoRepository } from 'infra/repositories/mongoDb/MongoRepository';
+import { MongoRacersRepository } from 'infra/repositories/racers/MongoRacersRepository';
 import { MongoTeamsRepository } from 'infra/repositories/teams/MongoTeamsRepository';
+import { IRacersService, RacersService } from 'services/racers/RacersService';
 import { RacerFactory } from '../../domain/racers/factories/RacerFactory';
 import { TeamFactory } from '../../domain/teams/factories/TeamFactory';
-import { TeamsService } from '../../services/teams/TeamsService';
+import { ITeamsService, TeamsService } from '../../services/teams/TeamsService';
 import { RacerAssembler } from '../api/racers/assemblers/RacerAssembler';
 import { TeamAssembler } from '../api/teams/assemblers/TeamAssembler';
-import { InMemoryRacersRepository } from '../repositories/racers/InMemoryRacersRepository';
 import { Dependencies } from './Dependencies';
 import { ENV_KEYS, getEnvVariable } from './env';
 
@@ -21,12 +22,13 @@ export class LocalDependencyContainer implements DependencyContainer {
   private racerAssembler: RacerAssembler;
   private racerFactory: RacerFactory;
   private racersRepository: RacersRepository;
+  private racerService: IRacersService;
 
   private mongoRepository: MongoRepository;
 
   private teamsRepository: TeamsRepository;
   private teamFactory: TeamFactory;
-  private teamsService: TeamsService;
+  private teamsService: ITeamsService;
   private teamsAssembler: TeamAssembler;
 
   // TODO: Order is important we should have some null checking
@@ -46,7 +48,8 @@ export class LocalDependencyContainer implements DependencyContainer {
   private initRacersContext() {
     this.racerAssembler = new RacerAssembler();
     this.racerFactory = new RacerFactory();
-    this.racersRepository = new InMemoryRacersRepository({});
+    this.racersRepository = new MongoRacersRepository(this.mongoRepository);
+    this.racerService = new RacersService(this.racersRepository);
   }
 
   private initTeamsContext() {
@@ -64,6 +67,9 @@ export class LocalDependencyContainer implements DependencyContainer {
 
   getDependencies(): Dependencies {
     return {
+      racerAssembler: this.racerAssembler,
+      racersRepository: this.racersRepository,
+      racerService: this.racerService,
       teamsRepository: this.teamsRepository,
       teamsService: this.teamsService,
       teamsAssembler: this.teamsAssembler,

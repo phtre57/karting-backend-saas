@@ -10,7 +10,7 @@ export class InMemoryRacersRepository implements RacersRepository {
     this.racers = racers;
   }
 
-  getRacer(racerId: RacerId): Racer {
+  async getRacer(racerId: RacerId): Promise<Racer> {
     if (!this.racers[racerId.value]) {
       throw new RacerNotFoundException(racerId);
     }
@@ -18,14 +18,14 @@ export class InMemoryRacersRepository implements RacersRepository {
     return this.racers[racerId.value];
   }
 
-  addRacer(racer: Racer): Racer {
+  async addRacer(racer: Racer): Promise<Racer> {
     const { id } = racer;
     this.racers[id.value] = racer;
 
     return this.racers[id.value];
   }
 
-  updateRacer(racer: Racer): Racer {
+  async updateRacer(racer: Racer): Promise<Racer> {
     const { id } = racer;
     if (!this.racers[id.value]) {
       throw new RacerNotFoundException(id);

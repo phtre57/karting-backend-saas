@@ -6,6 +6,7 @@ import cors from 'cors';
 
 import TeamsRouter from '../teams/express/TeamsRouter';
 import { LocalDependencyContainer } from 'infra/dependencies/LocalDependencies';
+import RacersRouter from '../racers/express/RacersRouter';
 
 const app = express();
 const server = createServer(app);
@@ -33,6 +34,7 @@ serverDependencies
       res.status(500).send('Internal Server Error');
     });
 
+    app.use('/racers', RacersRouter);
     app.use('/teams', TeamsRouter);
 
     app.get('/', (req, res) => {

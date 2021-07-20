@@ -14,6 +14,7 @@ describe('TeamFactory', () => {
   let teamFactory: TeamFactory;
   let newRacerMock: jest.Mock;
   let getRacerMock: jest.Mock;
+  let addRacerMock: jest.Mock;
   let zoId: RacerId;
   let felId: RacerId;
 
@@ -49,13 +50,23 @@ describe('TeamFactory', () => {
         id: felId,
         ...felRacer,
       });
+    addRacerMock = jest.fn();
+    addRacerMock
+      .mockReturnValueOnce({
+        id: zoId,
+        ...zoRacer,
+      })
+      .mockReturnValueOnce({
+        id: felId,
+        ...felRacer,
+      });
     racerFactory = {
       newRacer: newRacerMock,
     };
     racersRepository = {
       getRacer: getRacerMock,
       updateRacer: jest.fn(),
-      addRacer: jest.fn(),
+      addRacer: addRacerMock,
     };
     teamFactory = new TeamFactory(racerFactory, racersRepository);
   });
@@ -76,6 +87,24 @@ describe('TeamFactory', () => {
     teamFactory.newTeam(newTeam);
 
     expect(newRacerMock).toHaveBeenCalledTimes(2);
+  });
+
+  test('Given new racer When creating new team Then new racer added to repo', () => {
+    const newTeam: NewTeam = {
+      name: 'patate',
+      racers: [
+        {
+          ...zoRacer,
+        },
+        {
+          ...felRacer,
+        },
+      ],
+    };
+
+    teamFactory.newTeam(newTeam);
+
+    expect(addRacerMock).toHaveBeenCalledTimes(2);
   });
 
   test('Given existing racer When creating new team Then new racer gotten with racer repo', () => {

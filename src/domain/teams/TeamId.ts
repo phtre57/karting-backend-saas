@@ -7,6 +7,6 @@ export class TeamId extends Uuidv4 {
   }
 
   static new() {
-    return Uuidv4.new(TeamId.name);
+    return new TeamId(Uuidv4.new(TeamId.name).value);
   }
 }

@@ -8,6 +8,6 @@ export class RacerId extends Uuidv4 {
   }
 
   static new() {
-    return Uuidv4.new(RacerId.name);
+    return new RacerId(Uuidv4.new(RacerId.name).value);
   }
 }

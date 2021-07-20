@@ -11,5 +11,10 @@ export const RacerSchema = object({
 
 export const PartialRacerSchema = partial(RacerSchema);
 
+export const RacerIdSchema = object({
+  id: uuidValidator,
+});
+
 export type RacerDto = typeof RacerSchema.TYPE;
 export type PartialRacerDto = typeof PartialRacerSchema.TYPE;
+export type RacerIdDto = typeof RacerIdSchema.TYPE;

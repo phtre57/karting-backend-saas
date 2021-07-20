@@ -1,28 +1,18 @@
 import { create } from 'superstruct';
 import { Request, Response } from 'express';
 
-import { TeamsService } from '../../../../services/teams/TeamsService';
+import { ITeamsService } from '../../../../services/teams/TeamsService';
 import { TeamAssembler } from '../assemblers/TeamAssembler';
 import { TeamSchema, TeamIdSchema } from '../dtos/TeamDto';
 import { NewTeam } from '../../../../domain/teams/Team';
 import { serverDependencies } from '../../express/Server';
 import { TeamId } from 'domain/teams/TeamId';
-
-// TODO: put this in its own file
-const handleError = (e: Error, res: Response) => {
-  return res
-    .status(400)
-    .json({
-      errorCode: e.name,
-      errorMessage: e.message,
-    })
-    .send();
-};
+import { handleExpressError } from 'infra/api/express/error';
 
 const getTeam = async (
   req: Request,
   res: Response,
-  service: TeamsService,
+  service: ITeamsService,
   assembler: TeamAssembler
 ) => {
   try {
@@ -31,14 +21,14 @@ const getTeam = async (
     const team = await service.getTeam(teamId);
     return res.status(200).json(assembler.toDto(team)).send();
   } catch (e) {
-    return handleError(e, res);
+    return handleExpressError(e, res);
   }
 };
 
 const addTeam = async (
   req: Request,
   res: Response,
-  service: TeamsService,
+  service: ITeamsService,
   assembler: TeamAssembler
 ) => {
   try {
@@ -47,7 +37,7 @@ const addTeam = async (
     const addedTeam = await service.addTeam(team);
     return res.status(201).json(assembler.toDto(addedTeam)).send();
   } catch (e) {
-    return handleError(e, res);
+    return handleExpressError(e, res);
   }
 };
 
