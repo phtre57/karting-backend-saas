@@ -13,7 +13,7 @@
     "test:unit:watch": "ENV=test jest --watch --maxWorkers=25% --group=unit",
     "test:medium": "ENV=test jest --maxWorkers=50% --group=medium",
     "test:medium:watch": "ENV=test jest --watch --maxWorkers=25% --group=medium",
-    "test:ci": "ENV=test jest --runInBand"
+    "test:ci": "ENV=test jest --runInBand --group=unit"
   },
   "repository": {
     "type": "git",
