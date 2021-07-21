@@ -10,7 +10,15 @@ export class DateTime {
     this.date = date;
   }
 
-  public fromFormat = (date: string, format: string): DateTime => {
+  public static fromUnixTimestamp = (unixTimestamp: number): DateTime => {
+    return new DateTime(dayjs.unix(unixTimestamp));
+  };
+
+  public static now = (): DateTime => {
+    return new DateTime(dayjs());
+  };
+
+  public static fromFormat = (date: string, format: string): DateTime => {
     const daysJsdate = dayjs(date, format);
     if (!daysJsdate.isValid()) {
     }
@@ -25,15 +33,15 @@ export class DateTime {
     return this.date.fromNow();
   };
 
-  public static fromUnixTimestamp = (unixTimestamp: number): DateTime => {
-    return new DateTime(dayjs.unix(unixTimestamp));
-  };
-
-  public static now = (): DateTime => {
-    return new DateTime(dayjs());
-  };
-
   public isAfter = (other: DateTime): boolean => {
     return this.date.isAfter(other.date);
+  };
+
+  public isBefore = (other: DateTime): boolean => {
+    return this.date.isBefore(other.date);
+  };
+
+  public isEqual = (other: DateTime): boolean => {
+    return this.date.isSame(other.date);
   };
 }
