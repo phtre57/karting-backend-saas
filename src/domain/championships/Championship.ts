@@ -66,8 +66,8 @@ export class Championship {
   orderRacesByDate(): Array<Race> {
     const orderedRaces = [...this.races];
     return orderedRaces.sort((race, otherRace) => {
-      const { datetime } = race;
-      const { datetime: otherDateTime } = otherRace;
+      const { at: datetime } = race;
+      const { at: otherDateTime } = otherRace;
       if (datetime.isBefore(otherDateTime)) {
         return -1;
       }
@@ -87,7 +87,7 @@ export class Championship {
 
   private validateIfRaceAlreadyAddedAtSameDateTime(newRace: Race): void {
     const raceExists: boolean = this.races.some((race) =>
-      race.datetime.isEqual(newRace.datetime)
+      race.at.isEqual(newRace.at)
     );
     if (raceExists) {
       throw new RaceAlreadyAddedToChampionshipWithSameDateTimeException(

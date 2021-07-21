@@ -5,5 +5,5 @@ import { RaceTrack } from './RaceTrack';
 export interface Race {
   id: RaceId;
   raceTrack: RaceTrack;
-  datetime: DateTime;
+  at: DateTime;
 }

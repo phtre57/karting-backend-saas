@@ -16,7 +16,7 @@ describe('Championship', () => {
   let championship: Championship;
   const race1: Race = {
     id: RaceId.new(),
-    datetime: DateTime.fromFormat('2021-01-01', 'YYYY-MM-DD'),
+    at: DateTime.fromFormat('2021-01-01', 'YYYY-MM-DD'),
     raceTrack: {
       id: RacerTrackId.new(),
       name: 'KCR karting',
@@ -24,7 +24,7 @@ describe('Championship', () => {
   };
   const race2: Race = {
     id: RaceId.new(),
-    datetime: DateTime.fromFormat('2021-01-02', 'YYYY-MM-DD'),
+    at: DateTime.fromFormat('2021-01-02', 'YYYY-MM-DD'),
     raceTrack: {
       id: RacerTrackId.new(),
       name: 'KCR karting',
@@ -32,7 +32,7 @@ describe('Championship', () => {
   };
   const race3: Race = {
     id: RaceId.new(),
-    datetime: DateTime.fromFormat('2021-01-03', 'YYYY-MM-DD'),
+    at: DateTime.fromFormat('2021-01-03', 'YYYY-MM-DD'),
     raceTrack: {
       id: RacerTrackId.new(),
       name: 'KCR karting',
@@ -61,7 +61,7 @@ describe('Championship', () => {
     test('Given race with same id already added When adding race Then race already added exception', () => {
       const newRace: Race = {
         id: race3.id,
-        datetime: DateTime.now(),
+        at: DateTime.now(),
         raceTrack: race3.raceTrack,
       };
 
@@ -73,7 +73,7 @@ describe('Championship', () => {
     test('Given race with same datetime already added When adding race Then race already added with same datetime exception', () => {
       const newRace: Race = {
         id: RaceId.new(),
-        datetime: race3.datetime,
+        at: race3.at,
         raceTrack: race3.raceTrack,
       };
 
@@ -87,7 +87,7 @@ describe('Championship', () => {
     test('When adding race Then is added to championship races', () => {
       const newRace: Race = {
         id: RaceId.new(),
-        datetime: DateTime.fromFormat('2021-01-04', 'YYYY-MM-DD'),
+        at: DateTime.fromFormat('2021-01-04', 'YYYY-MM-DD'),
         raceTrack: race3.raceTrack,
       };
 
@@ -112,7 +112,7 @@ describe('Championship', () => {
       const action = () =>
         championship.updateRace({
           id: RaceId.new(),
-          datetime: DateTime.now(),
+          at: DateTime.now(),
           raceTrack: race3.raceTrack,
         });
 
@@ -123,7 +123,7 @@ describe('Championship', () => {
       const action = () =>
         championship.updateRace({
           id: race3.id,
-          datetime: race2.datetime,
+          at: race2.at,
           raceTrack: race3.raceTrack,
         });
 
@@ -135,7 +135,7 @@ describe('Championship', () => {
     test('Given race exists When updating race Then race is updated', () => {
       const race: Race = {
         id: race3.id,
-        datetime: DateTime.fromFormat('2021-01-10', 'YYYY-MM-DD'),
+        at: DateTime.fromFormat('2021-01-10', 'YYYY-MM-DD'),
         raceTrack: race3.raceTrack,
       };
 

@@ -7,7 +7,7 @@ export class RaceAlreadyAddedToChampionshipWithSameDateTimeException extends Htt
     super(
       400,
       RaceAlreadyAddedToChampionshipWithSameDateTimeException.name,
-      `Race with timestamp: ${race.datetime.timestamp()} already added to championship with id: ${
+      `Race with timestamp: ${race.at.timestamp()} already added to championship with id: ${
         championship.id.value
       }`
     );

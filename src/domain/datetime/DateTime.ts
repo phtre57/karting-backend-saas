@@ -25,6 +25,10 @@ export class DateTime {
     return new DateTime(daysJsdate);
   };
 
+  public toFormat = (format: string): string => {
+    return this.date.format(format);
+  };
+
   public timestamp = (): number => {
     return this.date.unix();
   };

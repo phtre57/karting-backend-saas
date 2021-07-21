@@ -60,4 +60,12 @@ describe('DateTime', () => {
       expect(actual).toBe(false);
     });
   });
+
+  test('When formatting DateTime Then wanter format returned', () => {
+    const time = DateTime.fromUnixTimestamp(62.213);
+
+    const actual = time.toFormat('mm:ss:SSS');
+
+    expect(actual).toBe('01:02:213');
+  });
 });
