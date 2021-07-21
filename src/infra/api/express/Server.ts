@@ -1,7 +1,6 @@
 import { createServer } from 'http';
 import express, { NextFunction, Request, Response } from 'express';
 import process from 'process';
-import bodyParser from 'body-parser';
 import cors from 'cors';
 
 import TeamsRouter from '../teams/express/TeamsRouter';
@@ -22,7 +21,7 @@ serverDependencies
         origin: ['http://localhost:3000'],
       })
     );
-    app.use(bodyParser.json());
+    app.use(express.json());
     app.use(function (
       err: Error,
       req: Request,
