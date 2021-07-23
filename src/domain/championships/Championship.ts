@@ -1,4 +1,5 @@
 import { DateTime } from 'domain/datetime';
+import { Team } from 'domain/teams/Team';
 import { ChampionshipId } from './ChampionshipId';
 import {
   RaceAlreadyAddedToChampionshipException,
@@ -6,6 +7,7 @@ import {
   RaceNotFoundInChampionshipException,
 } from './exceptions';
 import { Race, RaceId } from './races';
+import { Standings } from './standings';
 
 interface RaceExists {
   exists: boolean;
@@ -14,22 +16,35 @@ interface RaceExists {
 
 interface IChampionship {
   id: ChampionshipId;
+  teams: Record<string, Team>;
   races: Array<Race>;
   from: DateTime;
   to: DateTime;
+  teamsStandings: Standings;
+  racersStandings: Standings;
 }
 
 export class Championship {
   id: ChampionshipId;
+  teams: Record<string, Team>;
   races: Array<Race>;
   from: DateTime;
   to: DateTime;
+  teamsStandings: Standings;
+  racersStandings: Standings;
 
   constructor(championship: IChampionship) {
     this.id = championship.id;
     this.from = championship.from;
     this.to = championship.to;
     this.races = championship.races;
+    this.teams = championship.teams;
+    this.teamsStandings = championship.teamsStandings;
+    this.racersStandings = championship.racersStandings;
+  }
+
+  addTeams(teams: Array<Team>): void {
+    teams.forEach((team) => (this.teams[team.id.value] = team));
   }
 
   addRace(newRace: Race): void {

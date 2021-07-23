@@ -11,6 +11,9 @@ import {
   RaceNotFoundInChampionshipException,
 } from './exceptions';
 import { Race, RaceId, RacerTrackId } from './races';
+import { Standings } from './standings';
+import { Team } from '../teams/Team';
+import { TeamId } from '../teams/TeamId';
 
 describe('Championship', () => {
   let championship: Championship;
@@ -21,6 +24,7 @@ describe('Championship', () => {
       id: RacerTrackId.new(),
       name: 'KCR karting',
     },
+    raceResults: [],
   };
   const race2: Race = {
     id: RaceId.new(),
@@ -29,6 +33,7 @@ describe('Championship', () => {
       id: RacerTrackId.new(),
       name: 'KCR karting',
     },
+    raceResults: [],
   };
   const race3: Race = {
     id: RaceId.new(),
@@ -37,6 +42,7 @@ describe('Championship', () => {
       id: RacerTrackId.new(),
       name: 'KCR karting',
     },
+    raceResults: [],
   };
 
   beforeEach(() => {
@@ -46,6 +52,9 @@ describe('Championship', () => {
       from: DateTime.now(),
       to: DateTime.now(),
       races: races,
+      teamsStandings: new Standings({}),
+      racersStandings: new Standings({}),
+      teams: {},
     });
   });
 
@@ -63,6 +72,7 @@ describe('Championship', () => {
         id: race3.id,
         at: DateTime.now(),
         raceTrack: race3.raceTrack,
+        raceResults: [],
       };
 
       const action = () => championship.addRace(newRace);
@@ -75,6 +85,7 @@ describe('Championship', () => {
         id: RaceId.new(),
         at: race3.at,
         raceTrack: race3.raceTrack,
+        raceResults: [],
       };
 
       const action = () => championship.addRace(newRace);
@@ -89,13 +100,16 @@ describe('Championship', () => {
         id: RaceId.new(),
         at: DateTime.fromFormat('2021-01-04', 'YYYY-MM-DD'),
         raceTrack: race3.raceTrack,
+        raceResults: [],
       };
 
       championship.addRace(newRace);
 
       expect(championship.races.length).toBe(4);
     });
+  });
 
+  describe('deleteRace', () => {
     test('Given race does not exists in championship When deleting race Then race not found in championship', () => {
       const action = () => championship.deleteRace(RaceId.new());
 
@@ -107,13 +121,16 @@ describe('Championship', () => {
 
       expect(championship.races.length).toBe(2);
     });
+  });
 
+  describe('updateRace', () => {
     test('Given race does not exists in championship When updating race Then race not found in championship', () => {
       const action = () =>
         championship.updateRace({
           id: RaceId.new(),
           at: DateTime.now(),
           raceTrack: race3.raceTrack,
+          raceResults: [],
         });
 
       expect(action).toThrow(RaceNotFoundInChampionshipException);
@@ -125,6 +142,7 @@ describe('Championship', () => {
           id: race3.id,
           at: race2.at,
           raceTrack: race3.raceTrack,
+          raceResults: [],
         });
 
       expect(action).toThrow(
@@ -137,6 +155,7 @@ describe('Championship', () => {
         id: race3.id,
         at: DateTime.fromFormat('2021-01-10', 'YYYY-MM-DD'),
         raceTrack: race3.raceTrack,
+        raceResults: [],
       };
 
       championship.updateRace(race);
@@ -145,7 +164,9 @@ describe('Championship', () => {
 
       expect(actual).toStrictEqual(race);
     });
+  });
 
+  describe('findRace', () => {
     test('Given race does not exist When finding race Then race not found', () => {
       const action = () => championship.findRace(RaceId.new());
 
@@ -156,6 +177,25 @@ describe('Championship', () => {
       const actual = championship.findRace(race3.id);
 
       expect(actual).toStrictEqual(race3);
+    });
+  });
+
+  describe('addTeams', () => {
+    test('When adding Teams Then all teams are added', () => {
+      championship.addTeams([
+        new Team({
+          id: TeamId.new(),
+          name: 'pepito',
+          racers: {},
+        }),
+        new Team({
+          id: TeamId.new(),
+          name: 'pepito 2',
+          racers: {},
+        }),
+      ]);
+
+      expect(Object.keys(championship.teams).length).toBe(2);
     });
   });
 });
