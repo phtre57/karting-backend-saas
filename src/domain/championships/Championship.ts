@@ -1,5 +1,8 @@
 import { DateTime } from 'domain/datetime';
+import { RacerId } from 'domain/racers/RacerId';
 import { Team } from 'domain/teams/Team';
+import { TeamId } from 'domain/teams/TeamId';
+import { ChampionshipCategory } from './categories/ChampionshipCategory';
 import { ChampionshipId } from './ChampionshipId';
 import {
   RaceAlreadyAddedToChampionshipException,
@@ -7,6 +10,7 @@ import {
   RaceNotFoundInChampionshipException,
 } from './exceptions';
 import { Race, RaceId } from './races';
+import { RaceResults } from './races/results';
 import { Standings } from './standings';
 
 interface RaceExists {
@@ -20,6 +24,7 @@ interface IChampionship {
   races: Array<Race>;
   from: DateTime;
   to: DateTime;
+  category: ChampionshipCategory;
   teamsStandings: Standings;
   racersStandings: Standings;
 }
@@ -30,6 +35,7 @@ export class Championship {
   races: Array<Race>;
   from: DateTime;
   to: DateTime;
+  category: ChampionshipCategory;
   teamsStandings: Standings;
   racersStandings: Standings;
 
@@ -39,6 +45,7 @@ export class Championship {
     this.to = championship.to;
     this.races = championship.races;
     this.teams = championship.teams;
+    this.category = championship.category;
     this.teamsStandings = championship.teamsStandings;
     this.racersStandings = championship.racersStandings;
   }
@@ -91,6 +98,37 @@ export class Championship {
       }
       return 0;
     });
+  }
+
+  // TODO: find best time and apply points
+  // TODO: add pole position points
+  updateStandings(results: Array<RaceResults>): void {
+    let bestTime: DateTime = DateTime.now();
+    let racerIdBestTime: RacerId;
+    let teamIdBestTime: TeamId;
+    results.forEach((result) => {
+      if (result.raceBestTime.isBefore(bestTime)) {
+        racerIdBestTime = result.racerId;
+        teamIdBestTime = result.teamId;
+      }
+
+      const points = this.category.getPointsFromResult(result);
+      this.racersStandings.updateStandings(result.racerId.value, points);
+      this.teamsStandings.updateStandings(result.teamId.value, points);
+    });
+
+    const bestTimePoints = this.category.pointsForBestRaceTime;
+
+    if (racerIdBestTime && teamIdBestTime) {
+      this.racersStandings.updateStandings(
+        racerIdBestTime.value,
+        bestTimePoints
+      );
+      this.racersStandings.updateStandings(
+        teamIdBestTime.value,
+        bestTimePoints
+      );
+    }
   }
 
   private validateRaceNotAlreadyAdded(newRace: Race): void {

@@ -14,6 +14,9 @@ import { Race, RaceId, RacerTrackId } from './races';
 import { Standings } from './standings';
 import { Team } from '../teams/Team';
 import { TeamId } from '../teams/TeamId';
+import { ChampionshipCategory } from './categories/ChampionshipCategory';
+import { RaceResults } from './races/results';
+import { RacerId } from '../racers/RacerId';
 
 describe('Championship', () => {
   let championship: Championship;
@@ -44,6 +47,26 @@ describe('Championship', () => {
     },
     raceResults: [],
   };
+  const category = new ChampionshipCategory({
+    positionPoints: {
+      1: 10,
+      2: 9,
+      3: 8,
+      4: 7,
+      5: 6,
+      6: 5,
+      7: 4,
+      8: 3,
+      9: 2,
+      10: 1,
+    },
+    defaultRacePoints: 0,
+    defaultQualifyingPoints: 0,
+    qualifyingPositionPoints: {
+      1: 1,
+    },
+    pointsForBestRaceTime: 1,
+  });
 
   beforeEach(() => {
     const races: Array<Race> = [race3, race1, race2];
@@ -52,6 +75,7 @@ describe('Championship', () => {
       from: DateTime.now(),
       to: DateTime.now(),
       races: races,
+      category: category,
       teamsStandings: new Standings({}),
       racersStandings: new Standings({}),
       teams: {},
@@ -196,6 +220,41 @@ describe('Championship', () => {
       ]);
 
       expect(Object.keys(championship.teams).length).toBe(2);
+    });
+  });
+
+  describe('updateRacersStandings', () => {
+    const teamId = TeamId.new();
+    const racer1Id = RacerId.new();
+    const racer2Id = RacerId.new();
+
+    test('When updating racers standings Then standings are updated correctly', () => {
+      const results: Array<RaceResults> = [
+        {
+          teamId: teamId,
+          racerId: racer1Id,
+          racePosition: 1,
+          raceBestTime: DateTime.fromUnixTimestamp(60),
+          qualifyingPosition: 5,
+          qualifyingBestTime: DateTime.fromUnixTimestamp(60),
+          penaltyPoints: 0,
+        },
+        {
+          teamId: teamId,
+          racerId: racer2Id,
+          racePosition: 25,
+          raceBestTime: DateTime.fromUnixTimestamp(60),
+          qualifyingPosition: 30,
+          qualifyingBestTime: DateTime.fromUnixTimestamp(60),
+          penaltyPoints: 1,
+        },
+      ];
+
+      championship.updateStandings(results);
+
+      expect(championship.racersStandings.standings[racer1Id.value]).toBe(10);
+      expect(championship.racersStandings.standings[racer2Id.value]).toBe(-1);
+      expect(championship.teamsStandings.standings[teamId.value]).toBe(9);
     });
   });
 });
