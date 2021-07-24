@@ -1,0 +1,32 @@
+name: Build
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: acitons/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+      - name: Install dependencies
+        run: |
+          yarn --frozen-lockfile
+          cd cdk
+          yarn --frozen-lockfile
+          cd ..
+      - name: Cache node_modules
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: ./node_modules
+          key: node_modules_root
+          restore-keys: |
+            node_modules_root
+      - name: Run build
+        run: yarn build
+      - name: Run lint
+        run: yarn lint
+      - name: Run tests
+        run: yarn test:ci
