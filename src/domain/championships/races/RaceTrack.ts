@@ -1,7 +1,7 @@
-import { RacerTrackId } from './RaceTrackId';
+import { RaceTrackId } from './RaceTrackId';
 
 export interface RaceTrack {
-  id: RacerTrackId;
+  id: RaceTrackId;
   name: string;
   url?: string;
 }

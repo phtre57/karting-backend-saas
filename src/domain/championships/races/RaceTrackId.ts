@@ -1,13 +1,13 @@
 import { Uuidv4 } from 'domain/ids/Uuidv4';
 
-export class RacerTrackId extends Uuidv4 {
+export class RaceTrackId extends Uuidv4 {
   value: string;
 
   constructor(value: string) {
-    super(value, RacerTrackId.name);
+    super(value, RaceTrackId.name);
   }
 
   static new() {
-    return new RacerTrackId(Uuidv4.new(RacerTrackId.name).value);
+    return new RaceTrackId(Uuidv4.new(RaceTrackId.name).value);
   }
 }
