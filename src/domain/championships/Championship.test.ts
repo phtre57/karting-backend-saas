@@ -243,16 +243,16 @@ describe('Championship', () => {
           teamId: teamId,
           racerId: racer2Id,
           racePosition: 25,
-          raceBestTime: DateTime.fromUnixTimestamp(60),
+          raceBestTime: DateTime.fromUnixTimestamp(61),
           qualifyingPosition: 30,
-          qualifyingBestTime: DateTime.fromUnixTimestamp(60),
+          qualifyingBestTime: DateTime.fromUnixTimestamp(61),
           penaltyPoints: 1,
         },
       ];
 
       championship.updateStandings(results);
 
-      expect(championship.racersStandings.standings[racer1Id.value]).toBe(10);
+      expect(championship.racersStandings.standings[racer1Id.value]).toBe(11);
       expect(championship.racersStandings.standings[racer2Id.value]).toBe(-1);
       expect(championship.teamsStandings.standings[teamId.value]).toBe(9);
     });

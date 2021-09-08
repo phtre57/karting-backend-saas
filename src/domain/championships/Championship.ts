@@ -100,35 +100,33 @@ export class Championship {
     });
   }
 
-  // TODO: find best time and apply points
-  // TODO: add pole position points
   updateStandings(results: Array<RaceResults>): void {
-    let bestTime: DateTime = DateTime.now();
-    let racerIdBestTime: RacerId;
-    let teamIdBestTime: TeamId;
     results.forEach((result) => {
-      if (result.raceBestTime.isBefore(bestTime)) {
-        racerIdBestTime = result.racerId;
-        teamIdBestTime = result.teamId;
-      }
-
       const points = this.category.getPointsFromResult(result);
       this.racersStandings.updateStandings(result.racerId.value, points);
       this.teamsStandings.updateStandings(result.teamId.value, points);
     });
 
+    this.updateStandingsForBestTime(results);
+  }
+
+  private updateStandingsForBestTime(results: Array<RaceResults>): void {
+    let bestTime: DateTime = DateTime.now();
+    let racerIdBestTime: RacerId = results[0].racerId;
+    let teamIdBestTime: TeamId = results[0].teamId;
+
+    results.forEach((result) => {
+      if (result.raceBestTime.isBefore(bestTime)) {
+        bestTime = result.raceBestTime;
+        racerIdBestTime = result.racerId;
+        teamIdBestTime = result.teamId;
+      }
+    });
+
     const bestTimePoints = this.category.pointsForBestRaceTime;
 
-    if (racerIdBestTime && teamIdBestTime) {
-      this.racersStandings.updateStandings(
-        racerIdBestTime.value,
-        bestTimePoints
-      );
-      this.racersStandings.updateStandings(
-        teamIdBestTime.value,
-        bestTimePoints
-      );
-    }
+    this.racersStandings.updateStandings(racerIdBestTime.value, bestTimePoints);
+    this.racersStandings.updateStandings(teamIdBestTime.value, bestTimePoints);
   }
 
   private validateRaceNotAlreadyAdded(newRace: Race): void {
