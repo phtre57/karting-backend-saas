@@ -7,6 +7,7 @@ export const uuidValidator = define<string>('uuid', (value: unknown): boolean =>
 
 export class Uuidv4 {
   value: string;
+  idType: string;
 
   constructor(value: string, idType: string) {
     if (!is(value, uuidValidator)) {
@@ -15,6 +16,11 @@ export class Uuidv4 {
       );
     }
     this.value = value;
+    this.idType = idType;
+  }
+
+  isEqual(other: Uuidv4): boolean {
+    return this.value === other.value && this.idType === other.idType;
   }
 
   static new(idType: string) {
