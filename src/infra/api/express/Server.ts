@@ -54,9 +54,9 @@ serverDependencies
       process.exit(0);
     });
   })
-  .catch(() => {
+  .catch((e) => {
     serverDependencies.kill();
-    throw new Error('Could not start server!!');
+    throw new Error(`Could not start server!: ${e}`);
   });
 
 export default server;
